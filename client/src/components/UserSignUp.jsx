@@ -14,7 +14,6 @@ const UserSignUp = () => {
     const lastName = useRef(null);
     const emailAddress = useRef(null);
     const password = useRef(null)
-    const [errors, setErrors] = useState([]);
 
 
     // event handlers
@@ -46,7 +45,7 @@ const UserSignUp = () => {
                 console.log(`${user.firstName} is successfully signed up and authenticated`)
             } else if (response.status === 400) {
                 const data = await response.json();
-                setErrors(data.errors)
+                console.log(data)
             } else {
                 throw new Error();
             }

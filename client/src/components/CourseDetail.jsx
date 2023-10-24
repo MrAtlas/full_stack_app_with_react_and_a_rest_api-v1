@@ -10,6 +10,7 @@ const CourseDetail = () => {
     const { authUser } = useContext(UserContext);
     const navigate = useNavigate();
 
+    // Use useEffect to fetch course details when the component mounts
     useEffect(() => {
         apiHelper(`/courses/${id}`, 'GET')
             .then(response => response.json())
@@ -17,6 +18,7 @@ const CourseDetail = () => {
             .catch(error => console.error('Error fetching course details:', error));
     }, [id]);
 
+    // Handle course deletion with user authentication and error handling
     const handleDelete = async (event) => {
         // Check if the user is authenticated
         if (!authUser) {
@@ -36,14 +38,14 @@ const CourseDetail = () => {
                 navigate(`error`);
             } else {
                 navigate(`notfound`);
-                return response.json().then((error) => console.error(error))
-
+                return response.json().then((error) => console.error(error));
             }
         } catch (error) {
             console.error('Error deleting course:', error);
         }
     };
 
+    // Check if the authenticated user is authorized to update and delete the course
     const isAuthorized = authUser && authUser.id === course.userId;
 
     return (
@@ -67,12 +69,13 @@ const CourseDetail = () => {
                         <div>
                             <h3 className="course--detail--title">Course</h3>
                             <h4 className="course--name">{course.title}</h4>
-                            <p>{course.description}</p>
+                            <ReactMarkdown>
+                                {course.description}
+                            </ReactMarkdown>
                         </div>
                         <div>
                             <h3 className="course--detail--title">Estimated Time</h3>
                             <p>{course.estimatedTime}</p>
-
                             <h3 className="course--detail--title">Materials Needed</h3>
                             <ul className="course--detail--list">
                                 <ReactMarkdown>
@@ -84,7 +87,7 @@ const CourseDetail = () => {
                 </form>
             </div>
         </main>
-    )
+    );
 }
 
 export default CourseDetail;

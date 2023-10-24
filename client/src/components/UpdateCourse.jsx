@@ -5,7 +5,6 @@ import { apiHelper } from '../utils/apiHelper';
 
 
 const UpdateCourse = () => {
-    const [course, setCourse] = useState({});
     const [courseTitle, setCourseTitle] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
     const [estimatedTime, setEstimatedTime] = useState('');
@@ -19,12 +18,10 @@ const UpdateCourse = () => {
         apiHelper(`/courses/${id}`, 'GET')
             .then(response => response.json())
             .then(data => {
-                setCourse(data);
                 setCourseTitle(data.title);
                 setCourseDescription(data.description);
                 setEstimatedTime(data.estimatedTime);
                 setMaterialsNeeded(data.materialsNeeded);
-                setCourse(data);
                 // Check course ownership and user authentication here
                 if (!authUser) {
                     navigate('/signin');
@@ -33,7 +30,7 @@ const UpdateCourse = () => {
                 }
             })
             .catch(error => console.error('Error fetching course details:', error));
-    }, [id]);
+    }, [id, authUser, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -61,7 +58,7 @@ const UpdateCourse = () => {
             });
 
             if (response.status === 204) {
-                navigate(`/course-detail/${id}`);
+                navigate(`/courses/${id}`);
             } else if (response.status === 500) {
                 navigate(`error`);
             } else {

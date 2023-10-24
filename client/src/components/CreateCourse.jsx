@@ -3,7 +3,6 @@ import UserContext from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { apiHelper } from '../utils/apiHelper';
 
-
 const CreateCourse = () => {
     const { authUser } = useContext(UserContext);
     const [courseTitle, setCourseTitle] = useState('');
@@ -18,7 +17,7 @@ const CreateCourse = () => {
 
         // Check if the user is authenticated
         if (!authUser) {
-            navigate('/signin')
+            navigate('/signin');
             return;
         }
 
@@ -38,7 +37,6 @@ const CreateCourse = () => {
             userId: authUser.id
         };
 
-
         try {
             const response = await apiHelper('/courses', 'POST', course, {
                 username: authUser.emailAddress,
@@ -48,7 +46,7 @@ const CreateCourse = () => {
             if (response.status === 201) {
                 navigate(`/`);
             } else {
-                return response.json().then((error) => console.error(error))
+                return response.json().then((error) => console.error(error));
             }
         } catch (error) {
             console.error('Error creating course:', error);
@@ -86,10 +84,11 @@ const CreateCourse = () => {
                         <textarea id="materialsNeeded" name="materialsNeeded" value={materialsNeeded} onChange={(e) => setMaterialsNeeded(e.target.value)}></textarea>
                     </div>
                 </div>
-                <button className="button" type="submit">Create Course</button><button className="button button-secondary" onClick={() => navigate('/')}>Cancel</button>
+                <button className="button" type="submit">Create Course</button>
+                <button className="button button-secondary" onClick={() => navigate('/')}>Cancel</button>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export default CreateCourse
+export default CreateCourse;
